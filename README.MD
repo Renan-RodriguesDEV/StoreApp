@@ -55,19 +55,19 @@ npm install @react-native-picker/picker
 npm install axios
 ```
 
-> **Observação:** O pacote correto para seleção de imagens é o `expo-image-picker`.
+> **Observação:** O pacote correto para seleção de imagens é o `expo-image-picker`, contudo não funciona pra mim.
 
 ## Como rodar o projeto
 
 - Inicie o backend:
   ```bash
   cd backend
-  flask run
+  python app.py
   ```
 - Inicie o frontend:
   ```bash
   cd storeapp
-  npx expo start
+  npm start
   ```
 
 ## Licença
