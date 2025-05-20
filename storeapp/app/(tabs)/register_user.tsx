@@ -51,31 +51,64 @@ export default function RegisterProduct() {
     <View style={styles.container}>
       <Picker
         selectedValue={userType}
-        style={{ height: 50, marginBottom: 10 }}
+        style={styles.picker}
         onValueChange={(itemValue) => setUserType(itemValue)}
       >
         <Picker.Item label="Cliente" value="clientes" />
         <Picker.Item label="Vendedor" value="vendedores" />
       </Picker>
       <Text style={styles.label}>Nome:</Text>
-      <TextInput style={styles.input} value={nome} onChangeText={setNome} />
+      <TextInput style={styles.input} value={nome} onChangeText={setNome} placeholder="Nome" placeholderTextColor="#aaa" />
       <Text style={styles.label}>Email:</Text>
-      <TextInput style={styles.input} value={email} onChangeText={setEmail} />
+      <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" placeholderTextColor="#aaa" />
       <Text style={styles.label}>Senha:</Text>
       <TextInput
         style={styles.input}
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true}
+        placeholder="Senha"
+        placeholderTextColor="#aaa"
       />
-      <Button title="Salvar" onPress={handleSave} />
-      <BackButton />
+     <View style={styles.buttonRow}>
+        <View style={styles.buttonContainer}>
+          <Button title="Salvar" onPress={handleSave} color="#4F8EF7" />
+        </View>
+        <View style={styles.buttonContainer}>
+          <BackButton />
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#222" },
+  container: { flex: 1, padding: 20, backgroundColor: "#181A20" },
   label: { color: "#fff", marginTop: 10 },
-  input: { backgroundColor: "#fff", borderRadius: 5, padding: 8, marginTop: 5 },
+  picker: {
+    height: 50,
+    marginBottom: 10,
+    color: "#fff",
+    backgroundColor: "#23242a",
+  },
+  input: {
+    backgroundColor: "#23242a",
+    borderRadius: 5,
+    padding: 8,
+    marginTop: 5,
+    color: "#fff",
+    borderColor: "#333",
+    borderWidth: 1,
+    marginBottom: 10,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    maxWidth: 130,
+  },
 });
