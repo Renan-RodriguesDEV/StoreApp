@@ -41,3 +41,4 @@ app-example
 
 # python
 __pycache__/
+venv

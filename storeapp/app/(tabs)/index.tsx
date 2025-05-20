@@ -42,10 +42,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
-      <Text style={{ marginBottom: 5 }}>Tipo de usuário:</Text>
+      <Text style={styles.label}>Tipo de usuário:</Text>
       <Picker
         selectedValue={userType}
-        style={{ height: 50, marginBottom: 10 }}
+        style={styles.picker}
         onValueChange={(itemValue) => setUserType(itemValue)}
       >
         <Picker.Item label="Cliente" value="clientes" />
@@ -54,27 +54,70 @@ export default function App() {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor="#aaa"
         value={userEmail}
         onChangeText={setUserEmail}
       />
       <TextInput
         style={styles.input}
         placeholder="Senha"
+        placeholderTextColor="#aaa"
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true}
       />
-      <Button title="Entrar" onPress={() => authLogin()} />
-      <Button
-        title="Registrar-se"
-        onPress={() => router.push("/(tabs)/register_user")}
-      />
+      <View style={styles.buttonRow}>
+        <View style={styles.buttonContainer}>
+          <Button title="Entrar" onPress={authLogin} color="#4F8EF7" />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Registrar-se" onPress={() => router.push("/(tabs)/register_user")} color="#888" />
+        </View>
+      </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: "#fff", flex: 1 },
-  title: { fontSize: 24, marginBottom: 10, fontWeight: "bold" },
-  input: { borderColor: "#ccc", borderWidth: 1, padding: 10, marginBottom: 10 },
+  container: {
+    padding: 20,
+    backgroundColor: "#181A20",
+    flex: 1,
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
+  label: {
+    marginBottom: 5,
+    color: "#fff",
+  },
+  picker: {
+    height: 50,
+    marginBottom: 10,
+    color: "#fff",
+    backgroundColor: "#23242a",
+  },
+  input: {
+    borderColor: "#333",
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 10,
+    color: "#fff",
+    backgroundColor: "#23242a",
+    borderRadius: 5,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+    maxWidth: 130,
+  },
 });
