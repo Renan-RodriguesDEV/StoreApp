@@ -27,7 +27,8 @@ export default function App() {
   const [userType, setUserType] = useState<string | null>(null);
   const [id, setId] = useState<number>(0);
   // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
   useEffect(() => {
     const loadData = async () => {
       const token = await AsyncStorage.getItem("token");

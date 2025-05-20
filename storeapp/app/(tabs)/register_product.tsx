@@ -23,7 +23,8 @@ export default function RegisterProduct() {
   const [descricao, setDescricao] = useState("");
   const [id, setId] = useState(0);
   // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
   // Câmera
   const [temPermissao, setTemPermissao] = useState<boolean | null>(null);
   const [foto, setFoto] = useState<string | null>(null);

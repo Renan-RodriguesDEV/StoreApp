@@ -25,7 +25,8 @@ export default function BuyScreen() {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(0);
   // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
 
   useEffect(() => {
     AsyncStorage.getItem("id").then((idValue) => {

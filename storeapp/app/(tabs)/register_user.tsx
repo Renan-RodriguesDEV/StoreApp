@@ -14,7 +14,8 @@ export default function RegisterProduct() {
   const [userType, setUserType] = useState("clientes");
   const [id, setId] = useState(0);
   // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
   function saveUser(token: string, id: number) {
     // Salva o token e o email do usuário no AsyncStorage
     AsyncStorage.setItem("user", JSON.stringify(email));
