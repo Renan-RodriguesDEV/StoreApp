@@ -59,9 +59,21 @@ export default function RegisterProduct() {
         <Picker.Item label="Vendedor" value="vendedores" />
       </Picker>
       <Text style={styles.label}>Nome:</Text>
-      <TextInput style={styles.input} value={nome} onChangeText={setNome} placeholder="Nome" placeholderTextColor="#aaa" />
+      <TextInput
+        style={styles.input}
+        value={nome}
+        onChangeText={setNome}
+        placeholder="Nome"
+        placeholderTextColor="#aaa"
+      />
       <Text style={styles.label}>Email:</Text>
-      <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" placeholderTextColor="#aaa" />
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+        placeholderTextColor="#aaa"
+      />
       <Text style={styles.label}>Senha:</Text>
       <TextInput
         style={styles.input}
@@ -71,9 +83,9 @@ export default function RegisterProduct() {
         placeholder="Senha"
         placeholderTextColor="#aaa"
       />
-     <View style={styles.buttonRow}>
+      <View style={styles.buttonRow}>
         <View style={styles.buttonContainer}>
-          <Button title="Salvar" onPress={handleSave} color="#4F8EF7" />
+          <Button title="Salvar" onPress={handleSave} color="green" />
         </View>
         <View style={styles.buttonContainer}>
           <BackButton />

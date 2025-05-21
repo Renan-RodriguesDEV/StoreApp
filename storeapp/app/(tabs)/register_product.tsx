@@ -159,7 +159,7 @@ export default function RegisterProduct() {
         />
       )}
 
-      <Button title="Salvar" onPress={handleSave} />
+      <Button title="Salvar" onPress={handleSave} color={"green"} />
       <BackButton />
     </View>
   );

@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Animated,
 } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 type Product = {
   id: number;
@@ -26,9 +28,10 @@ export default function App() {
   const router = useRouter();
   const [userType, setUserType] = useState<string | null>(null);
   const [id, setId] = useState<number>(0);
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const sidebarWidth = sidebarExpanded ? 150 : 50;
   const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   useEffect(() => {
     const loadData = async () => {
       const token = await AsyncStorage.getItem("token");
@@ -62,135 +65,175 @@ export default function App() {
     AsyncStorage.removeItem("id");
     router.replace("/");
   }
-  function handleEditProduct(id: number) {
-    router.push({
-      pathname: "/(tabs)/edit_product",
-      params: { id: id.toString() },
-    });
-  }
+
   function handleEditUser(id: number) {
     router.push({
       pathname: "/(tabs)/edit_user",
       params: { id: id.toString() },
     });
   }
+
   function handleBuy(id: number) {
     router.push({ pathname: "/(tabs)/buy", params: { id: id.toString() } });
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.addButton, { alignSelf: "flex-end", marginBottom: 16 }]}
-        onPress={logout}
+    <View style={styles.mainContainer}>
+      {/* Sidebar */}
+      <Animated.View
+        style={[
+          styles.sidebar,
+          sidebarExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed,
+          { width: sidebarWidth },
+        ]}
       >
-        <Text style={styles.addButtonText}>Logout</Text>
-      </TouchableOpacity>
-      {userType === "vendedores" ? (
-        <View style={styles.headerRow}>
-          <Text style={styles.title}>Produtos</Text>
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => router.push("/(tabs)/register_product")}
-          >
-            <Text style={styles.addButtonText}>+ Adicionar Produto</Text>
-          </TouchableOpacity>
-        </View>
-      ) : null}
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Usuario</Text>
+        {/* Sidebar Toggle Button */}
         <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => {
-            handleEditUser(id);
-          }}
+          style={styles.sidebarToggle}
+          onPress={() => setSidebarExpanded((prev) => !prev)}
         >
-          <Text style={styles.addButtonText}>+ Editar Perfil</Text>
+          <Ionicons
+            name={
+              sidebarExpanded
+                ? "chevron-back-outline"
+                : "chevron-forward-outline"
+            }
+            size={24}
+            color="#fff"
+          />
         </TouchableOpacity>
-      </View>
-      {userType === "clientes" ? (
-        <View style={styles.headerRow}>
-          <Text style={styles.title}>Ver Minhas Compras</Text>
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => {
-              router.push("/(tabs)/my_purchases");
+        {/* Show buttons only if expanded */}
+        {sidebarExpanded && (
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Text style={styles.addButtonText}>+ Minhas Compras</Text>
-          </TouchableOpacity>
-        </View>
-      ) : null}
-      <FlatList
-        data={products}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <View style={styles.productContainer}>
-            <Text style={styles.productName}>{item.nome}</Text>
-            <Text style={styles.productInfo}>Preço: R$ {item.preco}</Text>
-            <Text style={styles.productInfo}>Descrição: {item.descricao}</Text>
-            <Text style={styles.productInfo}>
-              Quantidade: {item.quantidade}
-            </Text>
-            {/* Mostra a imagem se existir */}
-            {item.imagem && (
-              <Image
-                source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
-                style={{ width: 100, height: 100, marginTop: 10 }}
-              />
-            )}
-            {/* Botões de editar ou comprar */}
-            {userType === "vendedores" ? (
+            <View style={{ width: "100%", alignItems: "center" }}>
               <TouchableOpacity
-                style={styles.editButton}
-                onPress={() => handleEditProduct(item.id)}
+                style={[styles.sidebarButton, { marginTop: 10 }]}
+                onPress={() => handleEditUser(id)}
               >
-                <Text style={styles.buttonText}>Editar</Text>
+                <Text style={styles.sidebarButtonText}>Editar Perfil</Text>
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.buyButton}
-                onPress={() => handleBuy(item.id)}
-              >
-                <Text style={styles.buttonText}>Comprar</Text>
+              {userType === "clientes" && (
+                <TouchableOpacity
+                  style={styles.sidebarButton}
+                  onPress={() => router.push("/(tabs)/my_purchases")}
+                >
+                  <Text style={styles.sidebarButtonText}>Minhas Compras</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.sidebarLogoutContainer}>
+              <TouchableOpacity style={styles.sidebarButton} onPress={logout}>
+                <Text style={styles.sidebarButtonTextLogout}>Logout</Text>
               </TouchableOpacity>
-            )}
+            </View>
           </View>
         )}
-      />
+      </Animated.View>
+
+      {/* Main Content */}
+      <View style={styles.container}>
+        <FlatList
+          data={products}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => (
+            <View style={styles.productContainer}>
+              <Text style={styles.productName}>{item.nome}</Text>
+              <Text style={styles.productInfo}>Preço: R$ {item.preco}</Text>
+              <Text style={styles.productInfo}>
+                Descrição: {item.descricao}
+              </Text>
+              <Text style={styles.productInfo}>
+                Quantidade: {item.quantidade}
+              </Text>
+              {item.imagem && (
+                <Image
+                  source={{ uri: `data:image/jpeg;base64,${item.imagem}` }}
+                  style={{ width: 100, height: 100, marginTop: 10 }}
+                />
+              )}
+              {userType === "clientes" && (
+                <TouchableOpacity
+                  style={styles.buyButton}
+                  onPress={() => handleBuy(item.id)}
+                >
+                  <Text style={styles.buttonText}>Comprar</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#181818",
+  },
+  sidebar: {
+    backgroundColor: "#232323",
+    paddingVertical: 20,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    position: "relative",
+  },
+  sidebarCollapsed: {
+    width: 50,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: 0,
+  },
+  sidebarExpanded: {
+    width: 150,
+    alignItems: "center",
+    paddingHorizontal: 0,
+    flex: 1,
+  },
+  sidebarToggle: {
+    padding: 5,
+    borderRadius: 4,
+    marginBottom: 5,
+    alignItems: "center",
+    width: 40,
+  },
+  sidebarButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+    // alignItems: "center",
+    width: "90%",
+  },
+  sidebarButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    textAlign: "left",
+  },
+  sidebarButtonTextLogout: {
+    color: "red",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  sidebarLogoutContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#181818",
     paddingHorizontal: 16,
     paddingTop: 40,
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  title: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  addButton: {
-    backgroundColor: "#4A90E2",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-  },
-  addButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
   },
   listContent: {
     paddingBottom: 20,
@@ -200,10 +243,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   productName: {
     color: "#fff",
@@ -215,13 +254,6 @@ const styles = StyleSheet.create({
     color: "#ccc",
     fontSize: 15,
     marginBottom: 4,
-  },
-  editButton: {
-    backgroundColor: "#FF8C00",
-    padding: 8,
-    borderRadius: 8,
-    marginTop: 10,
-    alignItems: "center",
   },
   buyButton: {
     backgroundColor: "#2ecc71",

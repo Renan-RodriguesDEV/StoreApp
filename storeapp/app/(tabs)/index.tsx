@@ -71,7 +71,11 @@ export default function App() {
           <Button title="Entrar" onPress={authLogin} color="#4F8EF7" />
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Registrar-se" onPress={() => router.push("/(tabs)/register_user")} color="#888" />
+          <Button
+            title="Registrar-se"
+            onPress={() => router.push("/(tabs)/register_user")}
+            color="green"
+          />
         </View>
       </View>
     </View>
