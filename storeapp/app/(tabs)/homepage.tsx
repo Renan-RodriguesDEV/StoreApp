@@ -77,6 +77,17 @@ export default function App() {
     router.push({ pathname: "/(tabs)/buy", params: { id: id.toString() } });
   }
 
+  function handleAddProduct() {
+    router.push("/(tabs)/register_product");
+  }
+
+  function handleEditProduct(id: number) {
+    router.push({
+      pathname: "/(tabs)/edit_product",
+      params: { id: id.toString() },
+    });
+  }
+
   return (
     <View style={styles.mainContainer}>
       {/* Sidebar */}
@@ -127,6 +138,16 @@ export default function App() {
                   <Text style={styles.sidebarButtonText}>Minhas Compras</Text>
                 </TouchableOpacity>
               )}
+              {userType === "vendedores" && (
+                <TouchableOpacity
+                  style={styles.sidebarButton}
+                  onPress={handleAddProduct}
+                >
+                  <Text style={styles.sidebarButtonText}>
+                    Adicionar Produto
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.sidebarLogoutContainer}>
               <TouchableOpacity style={styles.sidebarButton} onPress={logout}>
@@ -159,14 +180,23 @@ export default function App() {
                   style={{ width: 100, height: 100, marginTop: 10 }}
                 />
               )}
-              {userType === "clientes" && (
+
+              {/* Botões de ação para vendedores ou clientes */}
+              {userType === "vendedores" ? (
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => handleEditProduct(item.id)}
+                >
+                  <Text style={styles.buttonText}>Editar</Text>
+                </TouchableOpacity>
+              ) : userType === "clientes" ? (
                 <TouchableOpacity
                   style={styles.buyButton}
                   onPress={() => handleBuy(item.id)}
                 >
                   <Text style={styles.buttonText}>Comprar</Text>
                 </TouchableOpacity>
-              )}
+              ) : null}
             </View>
           )}
         />
@@ -212,13 +242,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     marginBottom: 10,
-    // alignItems: "center",
     width: "90%",
+    backgroundColor: "#ff0202",
+    alignItems: "center",
   },
   sidebarButtonText: {
     color: "#fff",
     fontSize: 14,
-    textAlign: "left",
+    textAlign: "center",
   },
   sidebarButtonTextLogout: {
     color: "red",
@@ -254,6 +285,13 @@ const styles = StyleSheet.create({
     color: "#ccc",
     fontSize: 15,
     marginBottom: 4,
+  },
+  editButton: {
+    backgroundColor: "#FF8C00",
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: "center",
   },
   buyButton: {
     backgroundColor: "#2ecc71",
