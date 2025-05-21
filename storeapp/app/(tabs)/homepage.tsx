@@ -28,7 +28,7 @@ export default function App() {
   const router = useRouter();
   const [userType, setUserType] = useState<string | null>(null);
   const [id, setId] = useState<number>(0);
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const sidebarWidth = sidebarExpanded ? 150 : 50;
   const urlAPI = "http://192.168.198.16:5001"; // url para notebook
 
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sidebarButtonTextLogout: {
-    color: "red",
+    color: "white",
     fontSize: 14,
     textAlign: "center",
   },
