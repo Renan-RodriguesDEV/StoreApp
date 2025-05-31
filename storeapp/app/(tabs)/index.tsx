@@ -5,13 +5,12 @@ import { View, Text, Button, StyleSheet, Alert, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@/constants/venvs";
 export default function App() {
   const [userEmail, setUserEmail] = useState("");
   const [userType, setUserType] = useState("clientes");
   const [password, setPassword] = useState("");
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   const router = useRouter();
   async function saveUser(token: string, id: number) {
     // Salva o token e o email do usuário no AsyncStorage
@@ -22,7 +21,7 @@ export default function App() {
   }
   const authLogin = () => {
     axios
-      .post(`${urlAPI}/user/login?type_user=${userType}`, {
+      .post(`${API_URL}/user/login?type_user=${userType}`, {
         email: userEmail,
         password: password,
       })

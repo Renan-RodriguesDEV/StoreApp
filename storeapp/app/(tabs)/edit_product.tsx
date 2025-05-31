@@ -6,7 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import BackButton from "@/components/BackButton";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
-
+import { API_URL } from "@/constants/venvs";
+import { Platform } from "react-native";
 export default function EditProduct() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
@@ -18,9 +19,7 @@ export default function EditProduct() {
   const [showCamera, setShowCamera] = useState(false);
   const [temPermissao, setTemPermissao] = useState<boolean | null>(null);
   const cameraRef = useRef<typeof Camera | null>(null);
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -34,7 +33,7 @@ export default function EditProduct() {
         router.replace("/");
       }
     });
-    axios.get(`${urlAPI}/product/${id}`).then((res) => {
+    axios.get(`${API_URL}/product/${id}`).then((res) => {
       const prod = res.data.product;
       setNome(prod.nome);
       setPreco(String(prod.preco));
@@ -85,7 +84,7 @@ export default function EditProduct() {
       }
     }
     axios
-      .put(`${urlAPI}/product/${id}`, formData, {
+      .put(`${API_URL}/product/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
@@ -100,7 +99,7 @@ export default function EditProduct() {
   }
 
   function handleRemove() {
-    axios.delete(`${urlAPI}/product/${id}`).then((response) => {
+    axios.delete(`${API_URL}/product/${id}`).then((response) => {
       if (response.data.message === "sucess") {
         alert("Produto deletado com sucesso");
         router.replace("/(tabs)/homepage");
@@ -115,6 +114,9 @@ export default function EditProduct() {
     if (temPermissao === null) return <Text>Solicitando permissão...</Text>;
     if (temPermissao === false)
       return <Text>Permissão negada para usar a câmera.</Text>;
+    if (Platform.OS === "web") {
+      return <Text>Câmera não suportada no navegador.</Text>;
+    }
     return (
       <View style={{ flex: 1 }}>
         <Camera style={{ flex: 1 }} ref={cameraRef} />

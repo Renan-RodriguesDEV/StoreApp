@@ -14,7 +14,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import BackButton from "@/components/BackButton";
-
+import { API_URL } from "@/constants/venvs";
+import { Platform } from "react-native";
 export default function RegisterProduct() {
   const router = useRouter();
   const [nome, setNome] = useState("");
@@ -22,9 +23,7 @@ export default function RegisterProduct() {
   const [quantidade, setQuantidade] = useState("");
   const [descricao, setDescricao] = useState("");
   const [id, setId] = useState(0);
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   // Câmera
   const [temPermissao, setTemPermissao] = useState<boolean | null>(null);
   const [foto, setFoto] = useState<string | null>(null);
@@ -93,7 +92,7 @@ export default function RegisterProduct() {
     }
 
     axios
-      .post(`${urlAPI}/product/`, formData, {
+      .post(`${API_URL}/product/`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {

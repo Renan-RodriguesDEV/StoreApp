@@ -4,7 +4,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BackButton from "@/components/BackButton";
-
+import { API_URL } from "@/constants/venvs";
 export default function EditUser() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
@@ -12,9 +12,7 @@ export default function EditUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("");
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   useEffect(() => {
     // Função assíncrona para carregar dados
     const fetchData = async () => {
@@ -31,7 +29,7 @@ export default function EditUser() {
       try {
         // Agora userTypeValue está garantido
         const res = await axios.get(
-          `${urlAPI}/user/${id}?type_user=${userTypeValue}`
+          `${API_URL}/user/${id}?type_user=${userTypeValue}`
         );
         const userData = res.data.user;
         setNome(userData.nome);
@@ -48,7 +46,7 @@ export default function EditUser() {
 
   function handleSave() {
     axios
-      .put(`${urlAPI}/user/${id}?type_user=${userType}`, {
+      .put(`${API_URL}/user/${id}?type_user=${userType}`, {
         name: nome,
         password: password,
         email: email,
@@ -65,7 +63,7 @@ export default function EditUser() {
   }
   function handleRemove() {
     axios
-      .delete(`${urlAPI}/user/${id}?type_user=${userType}`)
+      .delete(`${API_URL}/user/${id}?type_user=${userType}`)
       .then((response) => {
         if (response.data.message === "sucess") {
           alert("Usuario deletado com sucesso");

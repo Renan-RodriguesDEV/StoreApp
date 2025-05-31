@@ -5,7 +5,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import BackButton from "@/components/BackButton";
-
+import { API_URL } from "@/constants/venvs";
 export default function RegisterProduct() {
   const router = useRouter();
   const [nome, setNome] = useState("");
@@ -13,9 +13,7 @@ export default function RegisterProduct() {
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("clientes");
   const [id, setId] = useState(0);
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
+
   function saveUser(token: string, id: number) {
     // Salva o token e o email do usuário no AsyncStorage
     AsyncStorage.setItem("user", JSON.stringify(email));
@@ -31,7 +29,7 @@ export default function RegisterProduct() {
       }
     });
     axios
-      .post(`${urlAPI}/user/?type_user=${userType}`, {
+      .post(`${API_URL}/user/?type_user=${userType}`, {
         name: nome,
         email: email,
         password: password,

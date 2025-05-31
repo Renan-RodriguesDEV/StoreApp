@@ -12,7 +12,7 @@ import {
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
-
+import { API_URL } from "@/constants/venvs";
 type Product = {
   id: number;
   nome: string;
@@ -28,9 +28,9 @@ export default function App() {
   const router = useRouter();
   const [userType, setUserType] = useState<string | null>(null);
   const [id, setId] = useState<number>(0);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const sidebarWidth = sidebarExpanded ? 150 : 50;
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,6 +40,7 @@ export default function App() {
         return;
       }
       const userTypeValue = await AsyncStorage.getItem("userType");
+      const userEmail = await AsyncStorage.getItem("user");
       setUserType(userTypeValue ? userTypeValue.replace(/"/g, "") : null);
 
       const idValue = await AsyncStorage.getItem("id");
@@ -48,8 +49,8 @@ export default function App() {
       try {
         const response =
           userTypeValue === "clientes"
-            ? await axios.get(`${urlAPI}/product`)
-            : await axios.get(`${urlAPI}/product/seller/${idValue}`);
+            ? await axios.get(`${API_URL}/product`)
+            : await axios.get(`${API_URL}/product/seller/${idValue}`);
 
         setProducts(response.data.products);
       } catch (err) {
@@ -160,6 +161,17 @@ export default function App() {
 
       {/* Main Content */}
       <View style={styles.container}>
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>
+            Bem-vindo ao StoreApp
+            {userEmail ? `, ${userEmail.replace(/"/g, "")}` : ""}!
+          </Text>
+          {userType === "vendedores" && (
+            <Text style={styles.intuitiveText}>
+              Adicione produtos para começar a vender!
+            </Text>
+          )}
+        </View>
         <FlatList
           data={products}
           keyExtractor={(item) => item.id.toString()}
@@ -303,5 +315,25 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  welcomeContainer: {
+    alignItems: "center",
+    marginBottom: 24,
+    marginTop: 10,
+  },
+
+  welcomeText: {
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  intuitiveText: {
+    color: "#FF8C00",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 4,
+    fontWeight: "600",
   },
 });

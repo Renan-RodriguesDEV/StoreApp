@@ -14,6 +14,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BackButton from "@/components/BackButton";
+import { API_URL } from "@/constants/venvs";
 
 const { width } = Dimensions.get("window");
 
@@ -24,9 +25,6 @@ export default function BuyScreen() {
   const [quantity, setQuantity] = useState("1");
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(0);
-  // const urlAPI = "http://192.168.1.9:5001"; // url para PC
-  // const urlAPI = "http://192.168.1.18:5001"; // url para notebook
-  const urlAPI = "http://192.168.198.16:5001"; // url para notebook
 
   useEffect(() => {
     AsyncStorage.getItem("id").then((idValue) => {
@@ -36,7 +34,7 @@ export default function BuyScreen() {
     });
     if (id) {
       axios
-        .get(`${urlAPI}/product/${id}`)
+        .get(`${API_URL}/product/${id}`)
         .then((res) => setProduct(res.data.product))
         .catch(() => {
           alert("Erro!! Não foi possível carregar o produto.");
@@ -54,7 +52,7 @@ export default function BuyScreen() {
     }
     setLoading(true);
     try {
-      await axios.post(`${urlAPI}/purchases/`, {
+      await axios.post(`${API_URL}/purchases/`, {
         fk_produto: product.id,
         fk_usuario: userId,
         count: parseInt(quantity),
