@@ -1,17 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  TextInput,
-  Button,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, TextInput, Button, Text, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Camera } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import BackButton from "@/components/BackButton";
 import { API_URL } from "@/constants/venvs";
@@ -27,7 +19,7 @@ export default function RegisterProduct() {
   // Câmera
   const [temPermissao, setTemPermissao] = useState<boolean | null>(null);
   const [foto, setFoto] = useState<string | null>(null);
-  const cameraRef = useRef<Camera | null>(null);
+  const cameraRef = useRef<CameraView>(null);
   const [showCamera, setShowCamera] = useState(false);
 
   useEffect(() => {
@@ -77,7 +69,7 @@ export default function RegisterProduct() {
     formData.append("description", descricao);
     formData.append("fk_seller", id.toString());
     if (foto && (foto.startsWith("file://") || foto.startsWith("data:image"))) {
-      alert("enviando o " + foto);
+      // alert("enviando o " + foto);
       if (foto.startsWith("file://")) {
         alert("enviando o file");
         formData.append("image", {
@@ -103,16 +95,19 @@ export default function RegisterProduct() {
           alert("Erro ao cadastrar produto");
         }
       })
-      .catch((err) => alert(`Erro ao cadastrar produto ${err}`));
+      .catch((err) => console.log(`Erro ao cadastrar produto ${err}`));
   }
 
   if (showCamera) {
     if (temPermissao === null) return <Text>Solicitando permissão...</Text>;
     if (temPermissao === false)
       return <Text>Permissão negada para usar a câmera.</Text>;
+    if (Platform.OS === "web") {
+      return <Text>Câmera não suportada no navegador.</Text>;
+    }
     return (
       <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} ref={cameraRef} />
+        <CameraView style={{ flex: 1 }} ref={cameraRef} />
         <View style={styles.buttons}>
           <Button title="Tirar Foto" onPress={tirarFoto} />
           <Button title="Cancelar" onPress={() => setShowCamera(false)} />

@@ -4,7 +4,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BackButton from "@/components/BackButton";
-import { Camera } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { API_URL } from "@/constants/venvs";
 import { Platform } from "react-native";
@@ -18,7 +18,7 @@ export default function EditProduct() {
   const [imagem, setImagem] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(false);
   const [temPermissao, setTemPermissao] = useState<boolean | null>(null);
-  const cameraRef = useRef<typeof Camera | null>(null);
+  const cameraRef = useRef<CameraView>(null);
 
   useEffect(() => {
     (async () => {
@@ -119,7 +119,7 @@ export default function EditProduct() {
     }
     return (
       <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} ref={cameraRef} />
+        <CameraView style={{ flex: 1 }} ref={cameraRef} />
         <View style={styles.buttons}>
           <Button title="Tirar Foto" onPress={tirarFoto} />
           <Button title="Cancelar" onPress={() => setShowCamera(false)} />
