@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import BackButton from "@/components/BackButton";
 import { API_URL } from "@/constants/venvs";
+
 type Purchase = {
   data_compra: string;
   descricao: string;
@@ -24,7 +25,7 @@ type Purchase = {
   p_quantidade: number;
   preco: number;
   quantidade: number;
-  imagem?: string; // Adicione este campo se não existir
+  imagem?: string;
 };
 
 const { width } = Dimensions.get("window");
@@ -65,18 +66,23 @@ export default function MyPurchasesScreen() {
         <Text style={{ color: "#fff" }}>
           Você ainda não realizou nenhuma compra.
         </Text>
+        <View style={styles.backButtonFixed}>
+          <BackButton />
+        </View>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Minhas Compras</Text>
-      <BackButton />
+      <View style={styles.header}>
+        <Text style={styles.title}>Minhas Compras</Text>
+      </View>
+
       <FlatList
         data={purchases}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <View style={styles.purchaseContainer}>
             {item.imagem ? (
@@ -116,6 +122,11 @@ export default function MyPurchasesScreen() {
           </View>
         )}
       />
+
+      {/* BackButton fixo no canto inferior direito */}
+      <View style={styles.backButtonFixed}>
+        <BackButton />
+      </View>
     </View>
   );
 }
@@ -133,12 +144,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  header: {
+    alignItems: "center",
+    marginBottom: 16,
+  },
   title: {
     color: "#fff",
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 16,
-    alignSelf: "center",
+    textAlign: "center",
     letterSpacing: 1,
   },
   purchaseContainer: {
@@ -191,5 +205,12 @@ const styles = StyleSheet.create({
   highlight: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  backButtonFixed: {
+    position: "absolute",
+    bottom: 30,
+    right: 20,
+    zIndex: 1000,
+    elevation: 10,
   },
 });
