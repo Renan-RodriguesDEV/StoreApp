@@ -15,7 +15,7 @@ app.register_blueprint(purchase_bp, url_prefix="/purchases")
 @app.route("/", methods=["GET"])
 def hello():
     return """<html>
-    <h1>A Sistema iniciado Sua Excelentíssima Majestade, Mestre Doutor Supremo Renan Rodrigues, Guardião do Conhecimento Universal, Sábio Conselheiro das Nações e Iluminado Soberano das Ideias Infinitas</h1>
+    <h1>Vossa excelentissima trindade Renan, Amaral, menos a Mariani. sejam Bem-vindos ao nosso backend, lhe-digo que a mesma encontra-se deverás em estado rigido e heretil </h1>
     
     </html>"""
 

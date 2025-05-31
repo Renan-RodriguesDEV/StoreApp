@@ -35,3 +35,6 @@ create table vendedores (
     email varchar(255) not null,
     senha varchar(16) not null
 );
+
+-- Para aumentar a capacidade de arquivos blobs inseridos
+SET GLOBAL max_allowed_packet = 134217728;
