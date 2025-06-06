@@ -40,7 +40,7 @@ export default function App() {
         return;
       }
       const userTypeValue = await AsyncStorage.getItem("userType");
-      const userEmail = await AsyncStorage.getItem("user");
+      setUserEmail(await AsyncStorage.getItem("user"))
       setUserType(userTypeValue ? userTypeValue.replace(/"/g, "") : null);
 
       const idValue = await AsyncStorage.getItem("id");

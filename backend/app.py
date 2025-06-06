@@ -15,8 +15,13 @@ app.register_blueprint(purchase_bp, url_prefix="/purchases")
 @app.route("/", methods=["GET"])
 def hello():
     return """<html>
-    <h1>Vossa excelentissima trindade Renan, Amaral, menos a Mariani. sejam Bem-vindos ao nosso backend, lhe-digo que a mesma encontra-se deverás em estado rigido e heretil </h1>
-    
+    <h1>API is running sucessfully!!</h1>
+    <ul>Developers
+    <li>Imperador Renan IV</li>
+    <li>Xogum Pedro II</li>
+    <li>Daimiô Mariani III</li>
+    </ul
+
     </html>"""
 
 
