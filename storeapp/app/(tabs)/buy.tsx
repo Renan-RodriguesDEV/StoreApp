@@ -25,6 +25,7 @@ export default function BuyScreen() {
   const [quantity, setQuantity] = useState("1");
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(0);
+  const [seller, setSeller] = useState<any>(null);
 
   useEffect(() => {
     AsyncStorage.getItem("id").then((idValue) => {
@@ -35,9 +36,23 @@ export default function BuyScreen() {
     if (id) {
       axios
         .get(`${API_URL}/product/${id}`)
-        .then((res) => setProduct(res.data.product))
+        .then((res) => {
+          setProduct(res.data.product);
+          axios
+            .get(
+              `${API_URL}/user/${res.data.product.fk_vendedor}?type_user=vendedores`
+            )
+            .then((sellerRes) => setSeller(sellerRes.data.user))
+            .catch(() => {
+              // alert("Erro ao carregar vendedor do produto.");
+              Alert.alert(
+                "Erro",
+                "Não foi possível carregar o vendedor do produto."
+              );
+            });
+        })
         .catch(() => {
-          alert("Erro!! Não foi possível carregar o produto.");
+          // alert("Erro!! Não foi possível carregar o produto.");
           Alert.alert("Erro", "Não foi possível carregar o produto");
         });
     }
@@ -102,7 +117,14 @@ export default function BuyScreen() {
         <Text style={styles.info}>
           Disponível: <Text style={styles.highlight}>{product.quantidade}</Text>
         </Text>
-
+        {seller && (
+          <Text style={styles.info}>
+            Vendedor:{" "}
+            <Text style={styles.highlight}>
+              {seller.nome} - ({seller.email})
+            </Text>
+          </Text>
+        )}
         <Text style={styles.label}>Quantidade:</Text>
         <TextInput
           style={styles.input}
@@ -159,15 +181,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   productImage: {
-    width: width * 0.7,
-    height: width * 0.7,
+    width: width * 0.5, // Reduzido de 0.7 para 0.5 (50% da largura da tela)
+    height: width * 0.5, // Reduzido de 0.7 para 0.5 (mantém proporção quadrada)
     borderRadius: 16,
     marginBottom: 18,
     backgroundColor: "#333",
   },
   noImage: {
-    width: width * 0.7,
-    height: width * 0.7,
+    width: width * 0.5, // Ajustar também o noImage para manter consistência
+    height: width * 0.5,
     borderRadius: 16,
     marginBottom: 18,
     backgroundColor: "#333",

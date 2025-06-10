@@ -15,7 +15,7 @@ create table produtos (
     preco decimal(10, 2) default 0.00,
     quantidade int default 0,
     descricao text,
-    imagem BLOB,
+    imagem LONGBLOB,
     fk_vendedor int not null,
     foreign key (fk_vendedor) references vendedores (id)
 );
